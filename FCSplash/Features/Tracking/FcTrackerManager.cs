@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using Zenject;
 using UnityEngine;
@@ -18,6 +18,7 @@ public class FcTrackerManager : IInitializable, IDisposable
     private int _processedNotes = 0;
     private bool _hasTriggeredFc = false;
     private GameObject? _splashCanvasObj;
+    private float _lastNoteTime = 0f;
     
     public bool HasTriggeredFc => _hasTriggeredFc;
 
@@ -30,11 +31,14 @@ public class FcTrackerManager : IInitializable, IDisposable
         _hasTriggeredFc = false;
         _splashCanvasObj = null;
 
-        _totalValidNotes = _beatmapData.GetBeatmapDataItems<NoteData>(0)
+        var validNotes = _beatmapData.GetBeatmapDataItems<NoteData>(0)
             .Where(noteData => noteData.gameplayType != NoteData.GameplayType.Bomb)
-            .Count();
+            .ToList();
 
-        Plugin.Log.Info($"FcTrackerManager Initialized. Total notes: {_totalValidNotes}");
+        _totalValidNotes = validNotes.Count;
+        _lastNoteTime = validNotes.LastOrDefault()?.time ?? 0f;
+
+        Plugin.Log.Info($"FcTrackerManager Initialized. Total notes: {_totalValidNotes}, Last note time: {_lastNoteTime}");
         
         _beatmapObjectManager.noteWasCutEvent += OnNoteWasCut;
         _beatmapObjectManager.noteWasMissedEvent += OnNoteWasMissed;
@@ -50,7 +54,6 @@ public class FcTrackerManager : IInitializable, IDisposable
         {
             UnityEngine.Object.Destroy(_splashCanvasObj);
         }
-        
     }
 
     private void OnNoteWasCut(NoteController noteController, in NoteCutInfo noteCutInfo)
@@ -71,30 +74,36 @@ public class FcTrackerManager : IInitializable, IDisposable
             _isFullCombo = false;
         }
 
-        CheckCompletion();
+        CheckIfFinalNote(noteData);
     }
 
     private void OnNoteWasMissed(NoteController noteController)
     {
         if (_hasTriggeredFc) return;
 
-        if (noteController.noteData.gameplayType != NoteData.GameplayType.Bomb)
+        NoteData noteData = noteController.noteData;
+        if (noteData.gameplayType != NoteData.GameplayType.Bomb)
         {
             _processedNotes++;
             _isFullCombo = false;
         }
 
-        CheckCompletion();
+        CheckIfFinalNote(noteData);
     }
 
-    private void CheckCompletion()
+    private void CheckIfFinalNote(NoteData noteData)
     {
         if (!Config.Instance.General.EnableMod) return;
-        if (_processedNotes >= _totalValidNotes)
+
+        // Check if the current note's timestamp matches or exceeds the final valid note time in the map
+        bool isLastNote = noteData.time >= _lastNoteTime;
+
+        if (isLastNote && !_hasTriggeredFc)
         {
-            if (_isFullCombo && !_hasTriggeredFc)
+            _hasTriggeredFc = true; // Lock it out immediately
+
+            if (_isFullCombo)
             {
-                _hasTriggeredFc = true;
                 Plugin.Log.Info("FcTrackerManager: Full Combo'd!");
                 
                 _splashCanvasObj = FcSpawner.SpawnDisplay();
