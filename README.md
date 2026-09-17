@@ -2,11 +2,11 @@
 
 <div align="center">
 
-# FCSplash 0.4.1 | UI Update
+# FCSplash 0.4.2 | UI Update
 <img width="800" height="450" alt="FCSplash 0 3 0" src="https://github.com/user-attachments/assets/e29d83e5-16b3-481e-907b-2e07f60509fd" />
 <p>
   <img src="https://img.shields.io/badge/Status-Release-blue" alt="Status Release">
-  <img src="https://img.shields.io/badge/Version-v0.4.1-purple" alt="Version 0.4.1">
+  <img src="https://img.shields.io/badge/Version-v0.4.2-purple" alt="Version 0.4.2">
 </p>
 
 A Beat Saber mod that adds a splash animation at the end if you FC a song with custom image support.
@@ -16,9 +16,9 @@ A Beat Saber mod that adds a splash animation at the end if you FC a song with c
 ---
 # Screenshots
 
-<img width="917" height="560" alt="FCSplash v0 4 1 UI Settings" src="https://github.com/user-attachments/assets/7bf25dca-fda4-4be8-8943-8754e34fce86" />
-<img width="800" height="469" alt="FCSplash v0 4 1 UI Sounds" src="https://github.com/user-attachments/assets/9c381d15-9945-41f9-a925-abaa9c65fd86" />
-<img width="800" height="469" alt="FCSplash v0 4 1 UI Images" src="https://github.com/user-attachments/assets/b4ce3841-bb66-4883-ae73-389ac6b9ba81" />
+<img width="917" height="560" alt="FCSplash v0 4 2 UI Settings" src="https://github.com/user-attachments/assets/7bf25dca-fda4-4be8-8943-8754e34fce86" />
+<img width="800" height="469" alt="FCSplash v0 4 2 UI Sounds" src="https://github.com/user-attachments/assets/9c381d15-9945-41f9-a925-abaa9c65fd86" />
+<img width="800" height="469" alt="FCSplash v0 4 2 UI Images" src="https://github.com/user-attachments/assets/b4ce3841-bb66-4883-ae73-389ac6b9ba81" />
 
 ---
 
